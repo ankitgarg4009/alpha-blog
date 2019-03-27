@@ -1,6 +1,14 @@
 class ArticlesController < ApplicationController
-    def new
+    def index
+        @articles= Article.all
+    end
+    
+    def new # new action is handled by the create function
         @article = Article.new
+    end
+    
+    def edit # edit action is handled by the update function
+        @article = Article.find(params[:id])
     end
     
     def create
@@ -10,6 +18,16 @@ class ArticlesController < ApplicationController
             redirect_to article_path(@article)
         else
             render "new"
+        end
+    end
+    
+    def update
+        @article = Article.find(params[:id])
+        if @article.update(article_params)
+            flash[:notice] = "Article was successfully updated"
+            redirect_to article_path(@article)
+        else
+            render "edit"
         end
     end
     
